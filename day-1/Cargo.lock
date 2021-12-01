@@ -12,7 +12,6 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 name = "day-1"
 version = "0.1.0"
 dependencies = [
- "easy_reader",
  "helper",
 ]
 
@@ -46,6 +45,9 @@ dependencies = [
 [[package]]
 name = "helper"
 version = "0.1.0"
+dependencies = [
+ "easy_reader",
+]
 
 [[package]]
 name = "libc"

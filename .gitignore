@@ -1,1 +1,4 @@
 /.idea/
+/day-1/target/
+/helper/target/
+/helper/Cargo.lock

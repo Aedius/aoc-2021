@@ -7,4 +7,3 @@ edition = "2021"
 
 [dependencies]
 helper = { path = "../helper" }
-easy_reader = "0.5.1"

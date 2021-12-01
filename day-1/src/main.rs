@@ -1,16 +1,8 @@
-use easy_reader::EasyReader;
-use std::{fs::File, io::Error};
+use helper::InputReader;
 
-fn main() -> Result<(), Error> {
-    let file = File::open("./input.txt")?;
-    let mut reader = EasyReader::new(file)?;
-
+fn main() {
     let mut container = Container::default();
-
-    reader.bof();
-    while let Some(line) = reader.next_line()? {
-        container.add_line(line.as_str());
-    }
+    container.read("./input.txt").unwrap();
 
     println!("result 1 : {}", calculate(container.get_data()));
 
@@ -18,8 +10,6 @@ fn main() -> Result<(), Error> {
     let datas: Vec<Data> = windows.iter().map(|w| w.convert_to_data()).collect();
 
     println!("result 2 : {}", calculate(datas));
-
-    Ok(())
 }
 
 #[derive(Clone, Default)]
@@ -29,6 +19,15 @@ struct Container {
 }
 
 impl Container {
+    fn get_data(&self) -> Vec<Data> {
+        self.datas.clone()
+    }
+    fn get_data_window(&self) -> Vec<DataWindow> {
+        self.data_windows.clone()
+    }
+}
+
+impl InputReader for Container {
     fn add_line(&mut self, line: &str) {
         self.datas.push(Data {
             int: line.parse::<usize>().unwrap(),
@@ -41,13 +40,6 @@ impl Container {
                 c: self.datas[self.datas.len() - 1].int,
             })
         }
-    }
-
-    fn get_data(&self) -> Vec<Data> {
-        self.datas.clone()
-    }
-    fn get_data_window(&self) -> Vec<DataWindow> {
-        self.data_windows.clone()
     }
 }
 
@@ -97,16 +89,7 @@ mod tests {
     #[test]
     fn test_calculate() {
         let mut container = Container::default();
-        container.add_line("199");
-        container.add_line("200");
-        container.add_line("208");
-        container.add_line("210");
-        container.add_line("200");
-        container.add_line("207");
-        container.add_line("240");
-        container.add_line("269");
-        container.add_line("260");
-        container.add_line("263");
+        container.read("./test.txt").unwrap();
 
         assert_eq!(calculate(container.get_data()), 7);
 
