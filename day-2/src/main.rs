@@ -7,12 +7,19 @@ fn main() {
 
     let position = container.calculate_1();
 
-    println!("result 1 : {} --- {:?}", position.horizontal * position.depth, position );
-
+    println!(
+        "result 1 : {} --- {:?}",
+        position.horizontal * position.depth,
+        position
+    );
 
     let position = container.calculate_2();
 
-    println!("result 2 : {} --- {:?}", position.horizontal * position.depth, position );
+    println!(
+        "result 2 : {} --- {:?}",
+        position.horizontal * position.depth,
+        position
+    );
 }
 
 #[derive(PartialEq, Debug)]
@@ -31,7 +38,7 @@ struct Container {
 struct Position {
     horizontal: usize,
     depth: usize,
-    aim: usize
+    aim: usize,
 }
 
 impl Default for Container {
@@ -43,7 +50,6 @@ impl Default for Container {
     }
 }
 
-
 impl InputReader for Container {
     fn add_line(&mut self, line: &str) {
         for cap in self.regex.captures_iter(line) {
@@ -51,15 +57,15 @@ impl InputReader for Container {
             let dist = cap.get(2).expect("no distance");
 
             match dir.as_str() {
-                "forward" => {
-                    self.movement.push(Move::Forward(dist.as_str().parse::<usize>().unwrap()))
-                }
-                "down" => {
-                    self.movement.push(Move::Down(dist.as_str().parse::<usize>().unwrap()))
-                }
-                "up" => {
-                    self.movement.push(Move::Up(dist.as_str().parse::<usize>().unwrap()))
-                }
+                "forward" => self
+                    .movement
+                    .push(Move::Forward(dist.as_str().parse::<usize>().unwrap())),
+                "down" => self
+                    .movement
+                    .push(Move::Down(dist.as_str().parse::<usize>().unwrap())),
+                "up" => self
+                    .movement
+                    .push(Move::Up(dist.as_str().parse::<usize>().unwrap())),
                 &_ => {
                     panic!("direction not recognize")
                 }
@@ -73,11 +79,10 @@ impl Container {
         let mut pos = Position {
             horizontal: 0,
             depth: 0,
-            aim: 0
+            aim: 0,
         };
 
         for m in self.movement.iter() {
-
             match m {
                 Move::Forward(d) => {
                     pos.horizontal += d;
@@ -98,11 +103,10 @@ impl Container {
         let mut pos = Position {
             horizontal: 0,
             depth: 0,
-            aim: 0
+            aim: 0,
         };
 
         for m in self.movement.iter() {
-
             match m {
                 Move::Forward(d) => {
                     pos.horizontal += d;
@@ -121,7 +125,6 @@ impl Container {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -131,8 +134,22 @@ mod tests {
         let mut container = Container::default();
         container.read("./test.txt").unwrap();
 
-        assert_eq!(container.calculate_1(), Position { horizontal: 15, depth: 10, aim:0 });
+        assert_eq!(
+            container.calculate_1(),
+            Position {
+                horizontal: 15,
+                depth: 10,
+                aim: 0
+            }
+        );
 
-        assert_eq!(container.calculate_2(), Position { horizontal: 15, depth: 60, aim:10 });
+        assert_eq!(
+            container.calculate_2(),
+            Position {
+                horizontal: 15,
+                depth: 60,
+                aim: 10
+            }
+        );
     }
 }

@@ -10,15 +10,9 @@ mod tests {
         let mut container = Container::default();
         container.read("./test.txt").unwrap();
 
-        assert_eq!(
-            container.calculate_1(),
-            5
-        );
+        assert_eq!(container.calculate_1(), 5);
 
-        assert_eq!(
-            container.calculate_2(),
-            12
-        );
+        assert_eq!(container.calculate_2(), 12);
     }
 }
 
@@ -47,13 +41,33 @@ impl InputReader for Container {
     fn add_line(&mut self, line: &str) {
         for cap in self.regex.captures_iter(line) {
             let start = Point {
-                x: cap.get(1).expect("no distance").as_str().parse::<usize>().expect("cannot parse"),
-                y: cap.get(2).expect("no distance").as_str().parse::<usize>().expect("cannot parse"),
+                x: cap
+                    .get(1)
+                    .expect("no distance")
+                    .as_str()
+                    .parse::<usize>()
+                    .expect("cannot parse"),
+                y: cap
+                    .get(2)
+                    .expect("no distance")
+                    .as_str()
+                    .parse::<usize>()
+                    .expect("cannot parse"),
             };
 
             let end = Point {
-                x: cap.get(3).expect("no distance").as_str().parse::<usize>().expect("cannot parse"),
-                y: cap.get(4).expect("no distance").as_str().parse::<usize>().expect("cannot parse"),
+                x: cap
+                    .get(3)
+                    .expect("no distance")
+                    .as_str()
+                    .parse::<usize>()
+                    .expect("cannot parse"),
+                y: cap
+                    .get(4)
+                    .expect("no distance")
+                    .as_str()
+                    .parse::<usize>()
+                    .expect("cannot parse"),
             };
 
             self.width = self.width.max(start.x);
@@ -62,10 +76,7 @@ impl InputReader for Container {
             self.height = self.height.max(start.y);
             self.height = self.height.max(end.y);
 
-            self.vector.push(Vector {
-                start,
-                end,
-            })
+            self.vector.push(Vector { start, end })
         }
     }
 }
@@ -103,7 +114,11 @@ impl Container {
     fn calculate_2(&self) -> usize {
         let mut grid = self.get_grid();
 
-        for vec in self.vector.iter().filter(|v| v.start.x != v.end.x && v.start.y != v.end.y) {
+        for vec in self
+            .vector
+            .iter()
+            .filter(|v| v.start.x != v.end.x && v.start.y != v.end.y)
+        {
             let mut i = 0;
             while i <= vec.start.y.max(vec.end.y) - vec.start.y.min(vec.end.y) {
                 let move_x: i32 = if vec.start.x < vec.end.x { 1 } else { -1 } * i as i32;
